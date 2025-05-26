@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Mi sitio{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>Registro Ventas</h1>
+        <nav>
+            <a href="/">Inicio</a>
+            <a href="/usuarios/perfil/">Perfil</a>
+        </nav>
+    </header>
+    <main>
+        {% block contenido %}
+        {% endblock %}
+    </main>
+</body>
+</html>
