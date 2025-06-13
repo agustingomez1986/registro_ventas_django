@@ -3,18 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block titulo %}Mi sitio{% endblock %}</title>
+    <title>{% block titulo %}Registro de ventas{% endblock %}</title>
 </head>
 <body>
     <header>
         <h1>Registro Ventas</h1>
         <nav>
             <a href="/">Inicio</a>
-            <a href="/usuarios/perfil/">Perfil</a>
         </nav>
     </header>
     <main>
         {% block contenido %}
+
+        <!-- Botón para mostrar el formulario de login -->
+        <button onclick="mostrarFormulario()">Iniciar sesión</button>
+
+        <!-- Formulario de login -->
+        <div id="login-form" style="display: none;">
+            <form method="post">
+                {% csrf_token %}
+
+                <label>Email o Celular</label><br>
+                {{ form.identificador }}<br>
+
+                <label>Contraseña</label><br>
+                {{ form.password }}<br>
+
+                {% if form.non_field_errors %}
+                    <p style="color:red;">{{ form.non_field_errors.0 }}</p>
+                {% endif %}
+
+                <button type="submit">Iniciar</button>
+            </form>
+        </div>
+
+        <!-- Botón de registro como link -->
+        <a href="/usuarios/registro"><button type="button">Registrarse</button></a>
+
+        <script>
+            function mostrarFormulario() {
+                document.getElementById("login-form").style.display = "block";
+            }
+
+            // Mostrar automáticamente el formulario si hubo error
+            {% if form.errors %}
+                document.addEventListener("DOMContentLoaded", function() {
+                    document.getElementById("login-form").style.display = "block";
+                });
+            {% endif %}
+        </script>
+        
         {% endblock %}
     </main>
 </body>

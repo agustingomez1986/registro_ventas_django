@@ -1,10 +1,14 @@
 from django import forms
 from .models import Usuarios
 
-class UsuariosForm(forms.ModelForm):
+class UsuariosRegForm(forms.ModelForm):
     class Meta:
         model = Usuarios
-        fields = ['first_name', 'email', 'password']
-        widget = {
-            'passwors':forms.PasswordInput()
+        fields = ['username', 'first_name', 'email', 'password']
+        widgets = {
+            'password':forms.PasswordInput()
         }
+
+class LoginForm(forms.Form):
+    identificador = forms.CharField(label='Email o Celular')
+    password = forms.CharField(widget=forms.PasswordInput, label='Contraseña')
