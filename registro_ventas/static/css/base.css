@@ -1,0 +1,144 @@
+:root {
+    --rojo: #d44a4a;
+    --naranja: #f08d39;
+    --amarillo: #f6cc4c;
+    --verde: #6cb65b;
+    --negro: #222;
+    --gris: #f4f4f4;
+    --blanco: #fff;
+    --fuente: 'Segoe UI', Tahoma, sans-serif;
+    --bordes: 10px;
+}
+
+body {
+    margin: 0;
+    background-color: var(--gris);
+    font-family: var(--fuente);
+    color: var(--negro);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background: linear-gradient(to right, var(--rojo), var(--naranja), var(--amarillo), var(--verde));
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+header img.logo {
+    height: 70px;
+    margin-bottom: 10px;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav a {
+    color: var(--blanco);
+    text-decoration: none;
+    margin: 0 20px;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: opacity 0.2s ease;
+}
+
+nav a:hover {
+    opacity: 0.8;
+}
+
+main {
+    flex: 1;
+    max-width: 960px;
+    width: 90%;
+    margin: 40px auto;
+    background: var(--blanco);
+    padding: 40px;
+    border-radius: var(--bordes);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Formularios */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+form label {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+form input, form select, form textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: var(--bordes);
+    font-size: 1em;
+    width: 100%;
+}
+
+form button, .boton {
+    background-color: var(--verde);
+    color: var(--blanco);
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--bordes);
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+form button:hover, .boton:hover {
+    background-color: var(--naranja);
+}
+
+/* Tabla */
+.tabla-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+}
+
+.tabla-usuarios th,
+.tabla-usuarios td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.tabla-usuarios th {
+    background-color: var(--verde);
+    color: var(--blanco);
+    text-transform: uppercase;
+}
+
+.tabla-usuarios tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Footer */
+footer {
+    background-color: var(--naranja);
+    color: var(--blanco);
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9em;
+    margin-top: auto;
+}
+
+/* Títulos */
+h1, h2, h3 {
+    color: var(--rojo);
+    text-align: center;
+    margin-top: 0;
+    text-transform: uppercase;
+}
