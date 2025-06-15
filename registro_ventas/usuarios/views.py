@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required, user_passes_test
+
 from .forms import UsuariosRegForm, LoginForm
 
+@user_passes_test(lambda u: u.is_superuser)
 def registrar_usuario(request):
     if request.method == 'POST':
         form = UsuariosRegForm(request.POST)
@@ -33,6 +36,7 @@ def usuarios(request):
 
     return render(request, 'base.html', {'form':form})
 
+@login_required(login_url='/usuarios/')
 def perfil(request):
     contexto = {'nombre': 'Juan'}
     return render(request, 'usuarios/perfil.html', contexto)

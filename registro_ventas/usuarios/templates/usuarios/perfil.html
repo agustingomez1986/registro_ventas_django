@@ -2,6 +2,11 @@
 
 {% block titulo %}Perfil{% endblock %}
 {% block contenido %}
-<h2>Bienvenido {{ nombre }}</h2>
-<p>Este es tu perfil</p>
+    <h2>Bienvenido {{ nombre }}</h2>
+    <p>Este es tu perfil</p>
+
+    <!-- Botón de registro como link -->
+    {% if request.user.is_superuser %}
+        <a href="/usuarios/registro"><button type="button">Registrar nuevo usuario</button></a>
+    {% endif %}
 {% endblock %}

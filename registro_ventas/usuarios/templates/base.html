@@ -10,16 +10,19 @@
         <h1>Registro Ventas</h1>
         <nav>
             <a href="/">Inicio</a>
+            {% if user.is_authenticated %}
+            <form method='post' action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type='submit'>Cerrar sesión</button>
+            </form>
+            {% endif %}
         </nav>
     </header>
     <main>
         {% block contenido %}
 
-        <!-- Botón para mostrar el formulario de login -->
-        <button onclick="mostrarFormulario()">Iniciar sesión</button>
-
         <!-- Formulario de login -->
-        <div id="login-form" style="display: none;">
+        <div id="login-form">
             <form method="post">
                 {% csrf_token %}
 
@@ -33,26 +36,9 @@
                     <p style="color:red;">{{ form.non_field_errors.0 }}</p>
                 {% endif %}
 
-                <button type="submit">Iniciar</button>
+                <button type="submit">Iniciar sesión</button>
             </form>
-        </div>
-
-        <!-- Botón de registro como link -->
-        <a href="/usuarios/registro"><button type="button">Registrarse</button></a>
-
-        <script>
-            function mostrarFormulario() {
-                document.getElementById("login-form").style.display = "block";
-            }
-
-            // Mostrar automáticamente el formulario si hubo error
-            {% if form.errors %}
-                document.addEventListener("DOMContentLoaded", function() {
-                    document.getElementById("login-form").style.display = "block";
-                });
-            {% endif %}
-        </script>
-        
+        </div>        
         {% endblock %}
     </main>
 </body>
