@@ -10,7 +10,7 @@
 <body>
     <header>
         <img src="{% static 'img/logo_tienda.png' %}" alt='La Tienda Logo' class='logo'/>
-        <h1 class="titulo">Registro Ventas</h1>
+        <h1 class="titulo">Panel de usuario</h1>
         <nav>
             <a href="/">Inicio</a>
             <a href="{% url 'usuarios' %}">Usuarios</a>
@@ -32,11 +32,11 @@
             <form method="post">
                 {% csrf_token %}
 
-                <label>Email o Celular</label><br>
-                {{ form.identificador }}<br>
+                <label>Email o Celular</label>
+                {{ form.identificador }}
 
-                <label>Contraseña</label><br>
-                {{ form.password }}<br>
+                <label>Contraseña</label>
+                {{ form.password }}
 
                 {% if form.non_field_errors %}
                     <p style="color:red;">{{ form.non_field_errors.0 }}</p>

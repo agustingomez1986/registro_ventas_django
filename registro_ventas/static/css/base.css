@@ -3,17 +3,24 @@
     --naranja: #f08d39;
     --amarillo: #f6cc4c;
     --verde: #6cb65b;
-    --negro: #222;
     --gris: #f4f4f4;
-    --blanco: #fff;
+    --gris-claro: #fafafa;
+    --blanco: #ffffff;
+    --negro: #222222;
     --fuente: 'Segoe UI', Tahoma, sans-serif;
-    --bordes: 10px;
+    --bordes: 12px;
+    --sombra: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
-    background-color: var(--gris);
     font-family: var(--fuente);
+    background-color: var(--gris);
     color: var(--negro);
     display: flex;
     flex-direction: column;
@@ -31,73 +38,85 @@ header {
 
 header img.logo {
     height: 70px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 nav {
-    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
 }
 
 nav a {
     color: var(--blanco);
     text-decoration: none;
-    margin: 0 20px;
+    font-weight: bold;
     text-transform: uppercase;
-    font-weight: 600;
-    transition: opacity 0.2s ease;
+    font-size: 1.2rem;
+    transition: opacity 1s ease;
+    padding: 5px;
 }
 
 nav a:hover {
-    opacity: 0.8;
+    background-color: var(--rojo);
+    border-radius: 20px;
+    transform: scale(1.1);
 }
 
 main {
     flex: 1;
     max-width: 960px;
-    width: 90%;
+    width: 50%;
     margin: 40px auto;
     background: var(--blanco);
     padding: 40px;
     border-radius: var(--bordes);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--sombra);
 }
 
 /* Formularios */
 form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    max-width: 500px;
+    gap: 8px;
+    max-width: 600px;
     margin: 0 auto;
 }
 
 form label {
     font-weight: 600;
     text-transform: uppercase;
-    font-size: 0.9em;
+    font-size: 0.85rem;
+    margin-top: 10px;
 }
 
-form input, form select, form textarea {
-    padding: 10px;
+form input,
+form select,
+form textarea {
+    padding: 12px;
     border: 1px solid #ccc;
     border-radius: var(--bordes);
-    font-size: 1em;
+    font-size: 1rem;
+    background-color: var(--gris-claro);
     width: 100%;
 }
 
-form button, .boton {
+form button,
+.boton {
     background-color: var(--verde);
     color: var(--blanco);
-    padding: 10px 20px;
+    padding: 12px 20px;
     border: none;
     border-radius: var(--bordes);
     font-weight: bold;
     cursor: pointer;
     text-transform: uppercase;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
-form button:hover, .boton:hover {
+form button:hover,
+.boton:hover {
     background-color: var(--naranja);
 }
 
@@ -110,9 +129,10 @@ form button:hover, .boton:hover {
 
 .tabla-usuarios th,
 .tabla-usuarios td {
-    padding: 12px 15px;
+    padding: 14px 18px;
     border: 1px solid #ddd;
     text-align: left;
+    font-size: 0.95rem;
 }
 
 .tabla-usuarios th {
@@ -122,7 +142,15 @@ form button:hover, .boton:hover {
 }
 
 .tabla-usuarios tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: var(--gris-claro);
+}
+
+/* Títulos */
+h1, h2, h3 {
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    color: var(--rojo);
 }
 
 /* Footer */
@@ -131,14 +159,35 @@ footer {
     color: var(--blanco);
     text-align: center;
     padding: 20px;
-    font-size: 0.9em;
-    margin-top: auto;
+    font-size: 0.9rem;
+    margin-top: 40px;
 }
 
-/* Títulos */
-h1, h2, h3 {
-    color: var(--rojo);
-    text-align: center;
-    margin-top: 0;
-    text-transform: uppercase;
+/* Responsive */
+@media (max-width: 768px) {
+    main {
+        padding: 25px;
+        width: 90%;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .tabla-usuarios th,
+    .tabla-usuarios td {
+        font-size: 0.85rem;
+        padding: 10px;
+    }
+
+    form input,
+    form select,
+    form textarea {
+        font-size: 0.95rem;
+    }
+
+    form button {
+        font-size: 0.95rem;
+    }
 }

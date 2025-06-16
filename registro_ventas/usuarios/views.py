@@ -2,20 +2,19 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
-
-from .forms import UsuariosRegForm, LoginForm
+from .forms import SignUpForm, LoginForm
 
 @user_passes_test(lambda u: u.is_superuser)
 def registrar_usuario(request):
     if request.method == 'POST':
-        form = UsuariosRegForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
             form.save()
             return redirect('registro_exitoso')
     else:
-        form = UsuariosRegForm()
+        form = SignUpForm()
 
     return render(request, 'usuarios/registrar.html', {'form':form})
 
