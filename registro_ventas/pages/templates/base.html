@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}La Tienda Colectiva Patagónica{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <header>
+        <img src="{% static 'img/logo_tienda.png' %}" alt='La Tienda Logo' class='logo'/>
+        <h1 class="titulo">{% block titulo_h1 %}La Tienda Colectiva Patagónica{% endblock %}</h1>
+        <nav>
+            <a href="/">Inicio</a>
+            {% block menu_nav %}
+                <a href="{% url 'usuarios' %}">Usuarios</a>
+            {% endblock %}
+        </nav>
+    </header>
+    <main>
+        {% block contenido %}
+        {% endblock %}
+    </main>
+    <footer>
+        La Tienda Colectiva Patagónica
+    </footer>
+</body>
+</html>

@@ -1,6 +1,17 @@
-{% extends "pages/home.html" %}
+{% extends "base.html" %}
+
 {% block titulo %}Panel de usuarios{% endblock %}
 {% block titulo_h1 %}Panel de usuario{% endblock %}
+{% block menu_nav %}
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            Cerrar sesión
+        </a>
+        <form id="logout-form" method="post" action="{% url 'logout' %}" style="display:none;">
+            {% csrf_token %}
+        </form>
+    {% endif %}
+{% endblock %}
 {% block contenido %}
     <!-- Formulario de login -->
     <div id="login-form">
