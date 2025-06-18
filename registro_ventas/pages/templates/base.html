@@ -26,20 +26,22 @@
             {% endif %}
         </nav>
     </header>
-    {% if user.is_authenticated %}
-        <aside>
-            <ul>
-                {% if user.is_superuser %}
-                    <li><a href="{% url 'registro' %}">Registrar usuario</a></li>
-                {% endif %}
-                <li><a href="">Registrar ventas</a></li>
-            </ul>
-        </aside>
-    {% endif %}
-    <main>
-        {% block contenido %}
-        {% endblock %}
-    </main>
+    <div class="container">
+        {% if user.is_authenticated %}
+            <aside class="menu-sidebar">
+                <ul>
+                    {% if user.is_superuser %}
+                        <li><a href="{% url 'registro' %}">Registrar usuario</a></li>
+                    {% endif %}
+                    <li><a href="">Registrar ventas</a></li>
+                </ul>
+            </aside>
+        {% endif %}
+        <main>
+            {% block contenido %}
+            {% endblock %}
+        </main>
+    </div>
     <footer>
         La Tienda Colectiva Patagónica
     </footer>

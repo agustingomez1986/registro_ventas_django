@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import SignUpForm, LoginForm
@@ -12,7 +13,8 @@ def registrar_usuario(request):
             user = form.save(commit=False)
             user.set_password(form.cleaned_data['password'])
             form.save()
-            return redirect('registro_exitoso')
+            messages.success(request, 'Cuenta creada exitosamente')
+            return redirect('registro')
     else:
         form = SignUpForm()
 

@@ -5,6 +5,15 @@ class SignUpForm(forms.ModelForm):
     class Meta:
         model = Usuarios
         fields = ['username', 'first_name', 'email', 'password']
+        labels = {
+            'username': 'Nombre de usuario',
+            'first_name': 'Nombre',
+            'email': 'Correo electrónico',
+            'password': 'Contraseña',
+        }
+        help_texts = {
+            'username': 'Requerido. Letras, numeros o @/./+/-/_'
+        }
         widgets = {
             'password':forms.PasswordInput()
         }
