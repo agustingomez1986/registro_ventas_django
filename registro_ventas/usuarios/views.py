@@ -18,7 +18,7 @@ def registrar_usuario(request):
 
     return render(request, 'usuarios/registrar.html', {'form':form})
 
-def usuarios(request):
+def login_usuario(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -33,9 +33,9 @@ def usuarios(request):
     else:
         form = LoginForm()
 
-    return render(request, 'base.html', {'form':form})
+    return render(request, 'usuarios/login.html', {'form':form})
 
-@login_required(login_url='/usuarios/')
+@login_required(login_url='/login/')
 def perfil(request):
     contexto = {'nombre': 'Juan'}
     return render(request, 'usuarios/perfil.html', contexto)
