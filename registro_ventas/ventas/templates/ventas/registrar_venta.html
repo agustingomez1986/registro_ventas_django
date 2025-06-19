@@ -1,21 +1,21 @@
-{% extends "base.html" %}
+{% extends "usuarios/login.html" %}
 
-{% block titulo %}Registro de usuario{% endblock %}
-{% block titulo_h1 %}Registro de usuario{% endblock %}
+{% block titulo %}Registrar ventas{% endblock titulo %}
 
 {% block contenido %}
-    <body>
-        <h2>Registro de usuario</h2>
+    <div>
+        <h2>Registrar ventas</h2>
         {% if messages %}
             {% for message in messages %}
                 <div class="mensajes">{{ message }}</div>
             {% endfor %}
         {% endif %}
-        
+
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Registrarse</button>
+            <button type="submit">Registrar venta</button>
         </form>
-    </body>
-{% endblock %}
+    </div>
+{% endblock contenido %}
+

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 
 CUENTA_TRANSFERENCIA_CHOICES = [
     ('Vale', 'Vale'),
@@ -19,7 +20,7 @@ class Venta(models.Model):
     ]
 
     usuario = models.ForeignKey('usuarios.Usuarios', on_delete=models.CASCADE, related_name='ventas')
-    fecha = models.DateTimeField(auto_now_add=True)
+    fecha = models.DateTimeField(default=now)
     metodo_pago = models.CharField(max_length=2, choices=METODO_PAGO_CHOICES)
     cuenta_transferencia = models.CharField(max_length=20, choices=CUENTA_TRANSFERENCIA_CHOICES, blank=True, null=True)
     total = models.DecimalField(max_digits=8, decimal_places=2)

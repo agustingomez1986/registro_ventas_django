@@ -31,9 +31,9 @@
             <aside class="menu-sidebar">
                 <ul>
                     {% if user.is_superuser %}
-                        <li><a href="{% url 'registro' %}">Registrar usuario</a></li>
+                        <li><a href="{% url 'signup' %}">Registrar usuario</a></li>
                     {% endif %}
-                    <li><a href="">Registrar ventas</a></li>
+                    <li><a href="{% url 'venta' %}">Registrar ventas</a></li>
                 </ul>
             </aside>
         {% endif %}

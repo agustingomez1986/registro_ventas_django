@@ -1,0 +1,20 @@
+{% extends "usuarios/login.html" %}
+
+{% block titulo %}Registro de usuario{% endblock titulo %}
+
+{% block contenido %}
+    <div>
+        <h2>Registro de usuario</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mensajes">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Registrarse</button>
+        </form>
+    </div>
+{% endblock %}
