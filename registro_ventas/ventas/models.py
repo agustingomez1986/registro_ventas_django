@@ -7,11 +7,11 @@ CUENTA_TRANSFERENCIA_CHOICES = [
     ('Vero', 'Vero'),
 ]
 
-
-class Producto(models.Model):
-    nombre = models.CharField(max_length=100)
-    precio = models.DecimalField(max_digits=8, decimal_places=2)
-    codigo_hacedor = models.CharField(max_length=4)
+CODIGO_HACEDOR_CHOICES = [
+    ('Ilanto', 'IL'),
+    ('Aguaclara', 'AC'),
+    ('Desopeton', 'DS'),
+]
 
 class Venta(models.Model):
     METODO_PAGO_CHOICES = [
@@ -19,15 +19,24 @@ class Venta(models.Model):
         ('TR', 'Transferencia'),
     ]
 
+    TURNO_CHOICES = [
+        ('M', 'Mañana'),
+        ('T', 'Tarde'),
+    ]
+
     usuario = models.ForeignKey('usuarios.Usuarios', on_delete=models.CASCADE, related_name='ventas')
     fecha = models.DateTimeField(default=now)
+    turno = models.CharField(max_length=1, choices=TURNO_CHOICES, default='M')
     metodo_pago = models.CharField(max_length=2, choices=METODO_PAGO_CHOICES)
-    cuenta_transferencia = models.CharField(max_length=20, choices=CUENTA_TRANSFERENCIA_CHOICES, blank=True, null=True)
-    total = models.DecimalField(max_digits=8, decimal_places=2)
+    cuenta_transferencia = models.CharField(choices=CUENTA_TRANSFERENCIA_CHOICES, blank=True, null=True)
+    total_a_cobrar = models.DecimalField(max_digits=8, decimal_places=2)
+    total_cobrado = models.DecimalField(max_digits=8, decimal_places=2)
 
 class VentaItem(models.Model):
     venta = models.ForeignKey(Venta, on_delete=models.CASCADE, related_name='items')
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=100)
     cantidad = models.PositiveIntegerField()
-    precio_unitario = models.DecimalField(max_digits=8, decimal_places=2)
+    precio = models.DecimalField(max_digits=8, decimal_places=2)
+    codigo_hacedor = models.CharField(choices=CODIGO_HACEDOR_CHOICES)
+    codigo_producto = models.CharField(max_length=6)
     

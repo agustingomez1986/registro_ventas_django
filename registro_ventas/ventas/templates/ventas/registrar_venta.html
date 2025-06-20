@@ -14,6 +14,14 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
+
+            {{ formset.management_form }}
+            {% for form in formset %}
+                <fieldset>
+                    {{ form.as_p }}
+                </fieldset>
+            {% endfor %}
+            
             <button type="submit">Registrar venta</button>
         </form>
     </div>
