@@ -67,13 +67,43 @@ nav a:hover {
 .container {
     display: flex;
     padding: 40px;
-    gap: 2%;
+    gap: 30px;
     width: 100%;
 }
 
 .menu-sidebar {
-    background-color: var(--gris-claro);
-    width: 20%;
+    background-color: var(--blanco);
+    padding: 20px;
+    border-radius: var(--bordes);
+    box-shadow: var(--sombra);
+    width: 220px;
+    min-height: 100%;
+}
+
+.menu-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-sidebar li {
+    margin-bottom: 15px;
+}
+
+.menu-sidebar a {
+    text-decoration: none;
+    display: block;
+    color: var(--negro);
+    font-weight: 600;
+    padding: 10px;
+    border-radius: var(--bordes);
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.menu-sidebar a:hover {
+    background-color: var(--gris);
+    transform: scale(1.05);
+    color: var(--rojo);
 }
 
 main {
