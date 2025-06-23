@@ -14,7 +14,8 @@ def registrar_venta(request):
         formset = VentaItemFormSet(request.POST)
 
         if form.is_valid() and formset.is_valid():
-            venta = form.save(commit=False)            
+            venta = form.save(commit=False)
+            venta.usuario = request.user
             venta.total_a_cobrar = 0
             venta.save()
 

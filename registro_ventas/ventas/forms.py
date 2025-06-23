@@ -18,12 +18,13 @@ class VentaForm(forms.ModelForm):
 
     class Meta:
         model = Venta
-        fields = ['fecha', 'turno', 'metodo_pago', 'cuenta_transferencia', 'total_cobrado']
+        fields = ['fecha', 'turno', 'metodo_pago', 'cuenta_transferencia', 'total_a_cobrar', 'total_cobrado']
         labels = {
             'fecha': 'Fecha',
             'turno': 'Turno',
             'metodo_pago': 'Método de pago',
             'cuenta_transferencia': 'Cuenta de transferencia',
+            'total_a_cobrar': 'Total a cobrar',
             'total_cobrado': 'Total cobrado'
 
         }
@@ -35,6 +36,6 @@ VentaItemFormSet = inlineformset_factory(
     Venta,
     VentaItem,
     fields=['nombre', 'cantidad', 'precio', 'codigo_hacedor', 'codigo_producto'],
-    extra=1, # cuántos formularios vacíos mostrar
+    extra=3, # cuántos formularios vacíos mostrar
     can_delete=True
 )

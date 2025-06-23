@@ -38,5 +38,5 @@ class VentaItem(models.Model):
     cantidad = models.PositiveIntegerField()
     precio = models.DecimalField(max_digits=8, decimal_places=2)
     codigo_hacedor = models.CharField(choices=CODIGO_HACEDOR_CHOICES)
-    codigo_producto = models.CharField(max_length=6)
+    codigo_producto = models.CharField(max_length=6, blank=True, null=True)
     
