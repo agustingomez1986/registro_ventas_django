@@ -30,7 +30,7 @@
         {% if user.is_authenticated %}
             <aside class="menu-sidebar">
                 <ul>
-                    {% if perms.usuarios.add_usuario %}
+                    {% if perms.usuarios.add_usuarios %}
                         <li><a href="{% url 'signup' %}">Registrar usuario</a></li>
                     {% endif %}
                     <li><a href="{% url 'venta' %}">Registrar ventas</a></li>

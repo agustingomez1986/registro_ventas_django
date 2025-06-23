@@ -16,10 +16,10 @@ class UsuariosConfig(AppConfig):
 
             # Obtengo los permisos del modelo
             content_type_usuarios = ContentType.objects.get(app_label='usuarios', model='usuarios')
-            permiso_add_usuario = Permission.objects.get(codename='add_usuario', content_type=content_type_usuarios)
+            permiso_add_usuarios = Permission.objects.get(codename='add_usuarios', content_type=content_type_usuarios)
 
             # Asigno permisos
-            grupo_administrador.permissions.add(permiso_add_usuario)
+            grupo_administrador.permissions.add(permiso_add_usuarios)
 
 
         except (Permission.DoesNotExist, ContentType.DoesNotExist, OperationalError, ProgrammingError):
