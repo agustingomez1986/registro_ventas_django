@@ -5,16 +5,15 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import SignUpForm, LoginForm
 
-@user_passes_test(lambda u: u.is_superuser)
+@login_required
+@user_passes_test(lambda u: u.groups.filter(name='administrador').exists())
 def registrar_usuario(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
             form.save()
             messages.success(request, 'Cuenta creada exitosamente')
-            return redirect('registro')
+            return redirect('signup')
     else:
         form = SignUpForm()
 
