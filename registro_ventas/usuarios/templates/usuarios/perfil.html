@@ -1,6 +1,6 @@
 {% extends "usuarios/login.html" %}
 
 {% block contenido %}
-    <h2>Bienvenido {{ nombre }}</h2>
-    <p>Este es tu perfil</p>
+    <h2>Bienvenido {{ user.first_name }}</h2>
+    <p>Perfil actual: {{ user.groups.first.name }}</p>
 {% endblock contenido %}

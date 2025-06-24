@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -38,5 +37,4 @@ def login_usuario(request):
 
 @login_required(login_url='login')
 def perfil(request):
-    contexto = {'nombre': 'Juan'}
-    return render(request, 'usuarios/perfil.html', contexto)
+    return render(request, 'usuarios/perfil.html')

@@ -18,9 +18,13 @@ class UsuariosConfig(AppConfig):
             content_type_usuarios = ContentType.objects.get(app_label='usuarios', model='usuarios')
             permiso_add_usuarios = Permission.objects.get(codename='add_usuarios', content_type=content_type_usuarios)
 
+            content_type_venta = ContentType.objects.get(app_label='venta', model='venta')
+            permiso_add_venta = Permission.objects.get(codename='add_venta', content_type=content_type_venta)
+
             # Asigno permisos
             grupo_administrador.permissions.add(permiso_add_usuarios)
-
+            grupo_administrador.permissions.add(permiso_add_venta)
+            grupo_vendedor.permissions.add(permiso_add_venta)
 
         except (Permission.DoesNotExist, ContentType.DoesNotExist, OperationalError, ProgrammingError):
             pass
