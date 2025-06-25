@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import SignUpForm, LoginForm
 
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='administrador').exists())
+@user_passes_test(lambda u: u.has_perm('usuarios.add_usuarios'))
 def registrar_usuario(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)

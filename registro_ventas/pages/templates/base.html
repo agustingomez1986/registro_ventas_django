@@ -33,7 +33,7 @@
                     {% if perms.usuarios.add_usuarios %}
                         <li><a href="{% url 'signup' %}">Registrar usuario</a></li>
                     {% endif %}
-                    {% if perms.usuarios.add_venta %}
+                    {% if perms.ventas.add_venta %}
                         <li><a href="{% url 'venta' %}">Registrar ventas</a></li>
                     {% endif %}
                 </ul>

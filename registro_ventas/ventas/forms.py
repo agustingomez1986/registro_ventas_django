@@ -39,3 +39,15 @@ VentaItemFormSet = inlineformset_factory(
     extra=3, # cuántos formularios vacíos mostrar
     can_delete=True
 )
+
+class FiltroVentaForm(forms.Form):
+    desde = forms.DateField(
+        required=False,
+        label='Desde',
+        widget=forms.DateInput(attrs={'type':'date'})
+    )
+    hasta = forms.DateField(
+        required=False,
+        label='Hasta',
+        widget=forms.DateInput(attrs={'type':'date'})
+    )
