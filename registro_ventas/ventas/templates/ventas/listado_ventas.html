@@ -1,0 +1,27 @@
+{% extends "usuarios/login.html" %}
+
+{% block titulo %}Listado de ventas{% endblock titulo %}
+
+{% block contenido %}
+    <h2>Listado de ventas</h2>
+
+    <form method="get">
+        {{ filtro_form.desde.label_tag }} {{ filtro_form.desde }}
+        {{ filtro_form.hasta.label_tag }} {{ filtro_form.hasta }}
+        <button type="sumbit">Filtrar</button>
+    </form>
+
+    {%for venta in ventas %}
+        <div>
+            <h3>Venta: {{ venta.fecha|date:"d/m/Y" }} - {{ venta.usuario }}</h3>
+            <p>Método: {{ venta.get_metodo_pago_display }} - Total: ${{ venta.total }}</p>
+            <ul>
+                {% for item in venta.items.all %}
+                    <li>{{ item.producto.nombre }} x{{ item.cantidad }} - ${{ item.cantidad|multiply:item.producto.precio }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% empty %}
+        <p>No hay ventas para el período seleccionado.</p>
+    {% endfor %}
+{% endblock contenido %}
