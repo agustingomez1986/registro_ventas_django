@@ -2,26 +2,23 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import ListView
 from django.utils.timezone import make_aware
 from datetime import datetime, timedelta
 from .forms import VentaForm, VentaItemFormSet, FiltroVentaForm, Venta
 
-def ventas(request):
-    return HttpResponse('Ventas')
-
 class VentaListView(LoginRequiredMixin, ListView):
     model = Venta
     context_object_name = 'ventas'
-    template_name = 'ventas/listado.html'
+    template_name = 'ventas/listado_ventas.html'
     paginate_by = 20
 
-    def queryset(self):
-        qs = Venta.objects.select_related('usuario').prefetch_related('items__producto')
+    def get_queryset(self):
+        qs = Venta.objects.select_related('usuario').prefetch_related('items')
         user = self.request.user
         # Si usuario no es interno solo verá sus ventas
-        if not user.interno:
+        if not user.groups.filter(name__in=['administrador', 'vendedor']).exists():
             qs = qs.filter(usuario=user)
 
         # Extraemos las fechas del request
@@ -53,7 +50,11 @@ def registrar_venta(request):
 
         if form.is_valid() and formset.is_valid():
             venta = form.save(commit=False)
-            venta.usuario = request.user
+            if request.user.group.filter(name='administrador').exists():
+                venta.usuario = form.cleaned_data['usuario']
+            else:
+                venta.usuario = request.user
+            
             venta.total_a_cobrar = 0
             venta.save()
 

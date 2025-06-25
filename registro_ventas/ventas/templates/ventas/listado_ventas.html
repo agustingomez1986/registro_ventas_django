@@ -1,4 +1,5 @@
 {% extends "usuarios/login.html" %}
+{% load custom_filters %}
 
 {% block titulo %}Listado de ventas{% endblock titulo %}
 
@@ -17,7 +18,7 @@
             <p>Método: {{ venta.get_metodo_pago_display }} - Total: ${{ venta.total }}</p>
             <ul>
                 {% for item in venta.items.all %}
-                    <li>{{ item.producto.nombre }} x{{ item.cantidad }} - ${{ item.cantidad|multiply:item.producto.precio }}</li>
+                    <li>{{ item.nombre }} x{{ item.cantidad }} - ${{ item.cantidad|multiply:item.precio }}</li>
                 {% endfor %}
             </ul>
         </div>

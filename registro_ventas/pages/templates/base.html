@@ -36,6 +36,9 @@
                     {% if perms.ventas.add_venta %}
                         <li><a href="{% url 'venta' %}">Registrar ventas</a></li>
                     {% endif %}
+                    {% if perms.ventas.view_venta %}
+                        <li><a href="{% url 'listado_ventas' %}">Listado de ventas</a></li>
+                    {% endif %}
                 </ul>
             </aside>
         {% endif %}

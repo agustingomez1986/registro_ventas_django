@@ -7,7 +7,7 @@ class VentaForm(forms.ModelForm):
         self.request = kwargs.pop('request', None) # extrae 'request' del kwargs
         super().__init__(*args, **kwargs)
 
-        if self.request and self.request.user.is_superuser:
+        if self.request and self.request.user.groups.filter(name__in='administrador').exists():
             # Si es superuser, mostrar el campo usuario
             self.fields['usuario'] = forms.ModelChoiceField(
                 queryset=Venta._meta.get_field('usuario').related_model.objects.all(),
@@ -26,16 +26,29 @@ class VentaForm(forms.ModelForm):
             'cuenta_transferencia': 'Cuenta de transferencia',
             'total_a_cobrar': 'Total a cobrar',
             'total_cobrado': 'Total cobrado'
-
         }
         widgets = {
             'fecha': forms.DateInput(attrs={'type':'date'}),
         }
 
+class VentaItemForm(forms.ModelForm):
+    class Meta:
+        model: VentaItem
+        fields=['nombre', 'cantidad', 'precio', 'codigo_hacedor', 'codigo_producto']
+        labels={
+            'nombre': 'Producto',
+            'cantidad': 'Cantidad',
+            'precio': 'Precio unitario',
+            'codigo_hacedor': 'Hacedor',
+            'codigo_producto': 'Código de producto'
+        }
+
+
+
 VentaItemFormSet = inlineformset_factory(
     Venta,
     VentaItem,
-    fields=['nombre', 'cantidad', 'precio', 'codigo_hacedor', 'codigo_producto'],
+    form=VentaItemForm,
     extra=3, # cuántos formularios vacíos mostrar
     can_delete=True
 )
