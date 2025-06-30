@@ -14,7 +14,23 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
+
             <button type="submit">Registrarse</button>
         </form>
     </div>
+
+    <script>
+        const checkbox = document.getElementById('id_crear_nuevo_emprendimiento');
+        const campoNombre = document.getElementById('id_nombre_emprendimiento').parentElement;
+        const campoCodigo = document.getElementById('id_codigo_emprendimiento').parentElement;
+
+        function toggleCampos(){
+            const visible = checkbox.checked;
+            campoNombre.style.display = visible ? 'block' : 'none';
+            campoCodigo.style.display = visible ? 'block' : 'none';
+        }
+        
+        checkbox.addEventListener('change', toggleCampos);
+        toggleCampos();
+    </script>
 {% endblock %}

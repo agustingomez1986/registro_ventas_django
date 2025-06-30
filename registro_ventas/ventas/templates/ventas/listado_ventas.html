@@ -11,18 +11,32 @@
         {{ filtro_form.hasta.label_tag }} {{ filtro_form.hasta }}
         <button type="sumbit">Filtrar</button>
     </form>
-
-    {%for venta in ventas %}
-        <div>
-            <h3>Venta: {{ venta.fecha|date:"d/m/Y" }} - {{ venta.usuario }}</h3>
-            <p>Método: {{ venta.get_metodo_pago_display }} - Total: ${{ venta.total }}</p>
-            <ul>
-                {% for item in venta.items.all %}
-                    <li>{{ item.nombre }} x{{ item.cantidad }} - ${{ item.cantidad|multiply:item.precio }}</li>
+    
+    {% if ventas_agrupadas %}
+        {% for fecha, turnos in ventas_agrupadas.items %}
+            <div>
+                <h3>Fecha: {{ fecha }}</h3>
+                {% for turno, usuarios in turnos.items %}
+                    {% for usuario, ventas in usuarios.items %}
+                        <h4>Turno: {{ turno }} - {{ usuario }}</h4>
+                        {% for venta in ventas %}
+                            <ul>
+                                {% for item in venta.items.all %}
+                                    <li>{{ item.producto }} x{{ item.cantidad }} - ${{ item.cantidad|multiply:item.precio }}</li>
+                                {% endfor %}
+                            </ul>
+                            <p>Total a cobrar: ${{ venta.total_a_cobrar }}
+                            <p>Total cobrado: ${{ venta.total_cobrado }} - Método de pago: {{ venta.get_metodo_pago_display }}</p>
+                            {% if venta.cuenta_transferencia %}
+                                <p>Cuenta de transferencia: {{ venta.cuenta_transferencia }}</p>
+                            {% endif %}
+                            <hr>
+                        {% endfor %}
+                    {% endfor %}
                 {% endfor %}
-            </ul>
-        </div>
-    {% empty %}
+            </div>
+        {% endfor %}
+    {% else %}
         <p>No hay ventas para el período seleccionado.</p>
-    {% endfor %}
+    {% endif %}
 {% endblock contenido %}

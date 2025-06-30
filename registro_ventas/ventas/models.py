@@ -1,18 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
 
-CUENTA_TRANSFERENCIA_CHOICES = [
-    ('Vale', 'Vale'),
-    ('Dani', 'Dani'),
-    ('Vero', 'Vero'),
-]
-
-CODIGO_HACEDOR_CHOICES = [
-    ('Ilanto', 'IL'),
-    ('Aguaclara', 'AC'),
-    ('Desopeton', 'DS'),
-]
-
 class Venta(models.Model):
     METODO_PAGO_CHOICES = [
         ('EF', 'Efectivo'),
@@ -28,15 +16,15 @@ class Venta(models.Model):
     fecha = models.DateTimeField(default=now)
     turno = models.CharField(max_length=1, choices=TURNO_CHOICES, default='M')
     metodo_pago = models.CharField(max_length=2, choices=METODO_PAGO_CHOICES)
-    cuenta_transferencia = models.CharField(choices=CUENTA_TRANSFERENCIA_CHOICES, blank=True, null=True)
+    cuenta_transferencia = models.CharField(default=None, blank=True, null=True)
     total_a_cobrar = models.DecimalField(max_digits=8, decimal_places=2)
     total_cobrado = models.DecimalField(max_digits=8, decimal_places=2)
 
 class VentaItem(models.Model):
     venta = models.ForeignKey(Venta, on_delete=models.CASCADE, related_name='items')
-    nombre = models.CharField(max_length=100)
+    producto = models.CharField(max_length=100)
     cantidad = models.PositiveIntegerField()
     precio = models.DecimalField(max_digits=8, decimal_places=2)
-    codigo_hacedor = models.CharField(choices=CODIGO_HACEDOR_CHOICES)
+    codigo_emprendimiento = models.CharField(max_length=4, blank=False, null=False)
     codigo_producto = models.CharField(max_length=6, blank=True, null=True)
     

@@ -1,5 +1,7 @@
+from collections import defaultdict
+from itertools import groupby
+from operator import attrgetter
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -8,18 +10,27 @@ from django.utils.timezone import make_aware
 from datetime import datetime, timedelta
 from .forms import VentaForm, VentaItemFormSet, FiltroVentaForm, Venta
 
-class VentaListView(LoginRequiredMixin, ListView):
+def defaultdict_to_dict(d):
+        if isinstance(d, defaultdict):
+            d = {k: defaultdict_to_dict(v) for k, v in d.items()}
+        return d
+
+# CBV Class Based Views
+
+class VentaListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Venta
     context_object_name = 'ventas'
     template_name = 'ventas/listado_ventas.html'
     paginate_by = 20
+    permission_required = 'ventas.view_venta'
 
     def get_queryset(self):
         qs = Venta.objects.select_related('usuario').prefetch_related('items')
         user = self.request.user
-        # Si usuario no es interno solo verá sus ventas
+        # Si usuario no es administrador o vendedor solo verá sus ventas
         if not user.groups.filter(name__in=['administrador', 'vendedor']).exists():
-            qs = qs.filter(usuario=user)
+            cod_emprendimiento = user.emprendimiento.values_list('codigo_emprendimiento', flat=True)
+            qs = qs.filter(items__codigo_emprendimiento__in=cod_emprendimiento).distinct()
 
         # Extraemos las fechas del request
         desde = self.request.GET.get('desde')
@@ -37,9 +48,21 @@ class VentaListView(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filtro_form'] = FiltroVentaForm(self.request.GET)
+        filtro_form = FiltroVentaForm(self.request.GET)
+        ventas = self.get_queryset()
+
+        agrupado = defaultdict(lambda:defaultdict(lambda: defaultdict(list)))
+        for venta in ventas:
+            fecha_str = venta.fecha.strftime("%d/%m/%Y")
+            turno = venta.get_turno_display()
+            usuario = venta.usuario.get_full_name()
+            agrupado[fecha_str][turno][usuario].append(venta)
+
+        context['ventas_agrupadas'] = defaultdict_to_dict(agrupado)
+        context['filtro_form'] = filtro_form
         return context
 
+# FBV Function Based Views
 
 @login_required
 @user_passes_test(lambda u: u.has_perm('ventas.add_venta'))
@@ -50,11 +73,11 @@ def registrar_venta(request):
 
         if form.is_valid() and formset.is_valid():
             venta = form.save(commit=False)
-            if request.user.group.filter(name='administrador').exists():
+            if request.user.groups.filter(name='administrador').exists():
                 venta.usuario = form.cleaned_data['usuario']
             else:
                 venta.usuario = request.user
-            
+
             venta.total_a_cobrar = 0
             venta.save()
 

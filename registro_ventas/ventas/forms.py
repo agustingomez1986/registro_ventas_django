@@ -1,14 +1,15 @@
 from django import forms
 from django.forms import inlineformset_factory
 from .models import Venta, VentaItem
+from usuarios.models import Usuarios, Emprendimiento
 
 class VentaForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None) # extrae 'request' del kwargs
         super().__init__(*args, **kwargs)
 
-        if self.request and self.request.user.groups.filter(name__in='administrador').exists():
-            # Si es superuser, mostrar el campo usuario
+        # Si es administrador, mostrar el campo usuario
+        if self.request and self.request.user.groups.filter(name='administrador').exists():
             self.fields['usuario'] = forms.ModelChoiceField(
                 queryset=Venta._meta.get_field('usuario').related_model.objects.all(),
                 label='Usuario',
@@ -16,14 +17,25 @@ class VentaForm(forms.ModelForm):
             )
             self.fields = {'usuario': self.fields['usuario'], **self.fields}
 
+        cuentas = [(cuenta, cuenta) for cuenta in Usuarios.objects
+                   .exclude(cuenta_transferencia__isnull = True)
+                   .exclude(cuenta_transferencia='')
+                   .values_list('cuenta_transferencia', flat = True)
+                   .distinct().order_by('cuenta_transferencia')]
+        
+        self.fields['cuenta_transferencia'] = forms.ChoiceField(
+            choices=[('', '--------')] + cuentas,
+            label='Cuenta Transferencia',
+            required=False,
+        )
+
     class Meta:
         model = Venta
-        fields = ['fecha', 'turno', 'metodo_pago', 'cuenta_transferencia', 'total_a_cobrar', 'total_cobrado']
+        fields = ['fecha', 'turno', 'metodo_pago', 'total_a_cobrar', 'total_cobrado']
         labels = {
             'fecha': 'Fecha',
             'turno': 'Turno',
             'metodo_pago': 'Método de pago',
-            'cuenta_transferencia': 'Cuenta de transferencia',
             'total_a_cobrar': 'Total a cobrar',
             'total_cobrado': 'Total cobrado'
         }
@@ -32,17 +44,25 @@ class VentaForm(forms.ModelForm):
         }
 
 class VentaItemForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['codigo_emprendimiento'] = forms.ModelChoiceField(
+            queryset=Emprendimiento.objects.all().order_by('codigo_emprendimiento'),
+            label='Código Emprendimiento',
+        )
+
+        self.fields = {'codigo_emprendimiento': self.fields['codigo_emprendimiento'], **self.fields}
+
     class Meta:
         model: VentaItem
-        fields=['nombre', 'cantidad', 'precio', 'codigo_hacedor', 'codigo_producto']
+        fields=['producto', 'cantidad', 'precio', 'codigo_producto']
         labels={
-            'nombre': 'Producto',
+            'producto': 'Producto',
             'cantidad': 'Cantidad',
             'precio': 'Precio unitario',
-            'codigo_hacedor': 'Hacedor',
             'codigo_producto': 'Código de producto'
         }
-
 
 
 VentaItemFormSet = inlineformset_factory(
