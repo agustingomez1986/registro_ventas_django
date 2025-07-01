@@ -70,7 +70,6 @@ VentaItemFormSet = inlineformset_factory(
     VentaItem,
     form=VentaItemForm,
     extra=3, # cuántos formularios vacíos mostrar
-    can_delete=True
 )
 
 class FiltroVentaForm(forms.Form):

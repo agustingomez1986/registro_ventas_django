@@ -2,6 +2,19 @@ from django import forms
 from django.contrib.auth.models import Group
 from .models import Usuarios, Emprendimiento
 
+class ModificarUsuarioForm(forms.ModelForm):
+    class Meta:
+        model= Usuarios
+        fields= ['username', 'first_name', 'email', 'password', 'telefono', 'cuenta_transferencia']
+        labels= {
+            'username': 'Nombre de usuario',
+            'first_name': 'Nombre',
+            'email': 'Correo electrónico',
+            'password': 'Contraseña',
+            'telefono': 'Teléfono',
+        }
+        widgets= {'password': forms.PasswordInput()}
+
 class SignUpForm(forms.ModelForm):
     grupo = forms.ModelChoiceField(
         queryset=Group.objects.all(),
