@@ -15,7 +15,7 @@ Sistema para registrar y gestionar ventas, desarrollado con Django y SQL.
 
 ## Capturas
 
-![Vista principal](media/captura.png)
+![Vista principal](registro_ventas/media/captura.png)
 
 ---
 
