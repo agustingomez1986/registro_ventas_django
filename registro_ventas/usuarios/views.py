@@ -1,23 +1,30 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth import authenticate, login, update_session_auth_hash
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.generic.edit import UpdateView
 from .forms import SignUpForm, LoginForm, ModificarUsuarioForm
 from .models import Usuarios
 
-class ModificarUsuarioView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class Perfil(LoginRequiredMixin, UpdateView):
     model = Usuarios
     form_class = ModificarUsuarioForm
-    template_name = 'usuarios/modificar_usuario.html'
-    success_url = reverse_lazy('usuarios/perfil.html')
-    permission_required = 'usuarios.change_usuarios'
+    template_name = 'usuarios/perfil.html'
+    success_url = reverse_lazy('perfil')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Cuenta actualizada exitosamente')
+        password = form.cleaned_data['password']
+        if password and not self.object.check_password(password):
+            self.object.set_password(password)
+            update_session_auth_hash(self.request, self.object)
+        return super().form_valid(form)
 
     def get_object(self, queryset = None):
         return self.request.user
-
+    
 
 @login_required
 @user_passes_test(lambda u: u.has_perm('usuarios.add_usuarios'))
@@ -49,7 +56,3 @@ def login_usuario(request):
         form = LoginForm()
 
     return render(request, 'usuarios/login.html', {'form':form})
-
-@login_required(login_url='login')
-def perfil(request):
-    return render(request, 'usuarios/perfil.html')
